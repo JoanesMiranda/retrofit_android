@@ -1,8 +1,11 @@
 package com.example.suporte.retrofit;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import java.util.Arrays;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,26 +27,16 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
         RetrofitServices mRetrofitServices = retrofit.create(RetrofitServices.class);
-        Call<Empresa> mEmpregados = mRetrofitServices.listFuncionarios();
+        Call<List<Funcionarios>> mEmpregados = mRetrofitServices.listFuncionarios();
 
-        mEmpregados.enqueue(new Callback<Empresa>() {
+        mEmpregados.enqueue(new Callback<List<Funcionarios>>() {
             @Override
-            public void onResponse(Call<Empresa> call, Response<Empresa> response) {
-
-                if(!response.isSuccessful()){
-                    Log.d(TAG, "onResponse: error"+response.code());
-                }else{
-                    Empresa mEmpresa = response.body();
-                    for(Funcionarios emp: mEmpresa.listFuncionarios){
-                        Log.i(TAG,String.format("%s "+emp));
-                    }
-                }
-
+            public void onResponse(Call<List<Funcionarios>> call, Response<List<Funcionarios>> response) {
+                Log.w("AJ", Arrays.toString(response.body().toArray()));
             }
 
             @Override
-            public void onFailure(Call<Empresa> call, Throwable t) {
-                Log.d(TAG, "onFailure: "+t.getMessage());
+            public void onFailure(Call<List<Funcionarios>> call, Throwable t) {
 
             }
         });
